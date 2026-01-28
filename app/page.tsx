@@ -15,7 +15,7 @@ function toCSV(rows: Row[]): string {
   };
 
   const header = cols.map(escape).join(",");
-  const lines = rows.map((r) => cols.map((c) => escape((r as Row)?.[c])).join(","));
+  const lines = rows.map((r) => cols.map((c) => escape(r?.[c])).join(","));
   return [header, ...lines].join("\n");
 }
 
@@ -35,8 +35,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [data, setData] = useState<{ keyword?: string; count?: number; posts?: Row[] } | null>(null);
+const posts: Row[] = data?.posts || [];
 
-  const posts = data?.posts || [];
   const csv = useMemo(() => toCSV(posts), [posts]);
 
   async function runScrape() {
