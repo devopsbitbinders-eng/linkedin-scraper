@@ -1,29 +1,27 @@
 "use client";
 import { useMemo, useState } from "react";
 
-function toCSV(rows) {
+type Row = Record<string, unknown>;
+
+function toCSV(rows: Row[]): string {
   if (!rows?.length) return "";
 
   const cols = Array.from(new Set(rows.flatMap((r) => Object.keys(r || {}))));
 
-  const escape = (v) => {
+  const escape = (v: unknown): string => {
     if (v == null) return "";
     const s = String(v);
-    // Escape quotes by doubling them
     return `"${s.replace(/"/g, '""')}"`;
   };
 
   const header = cols.map(escape).join(",");
-  const lines = rows.map((r) => cols.map((c) => escape(r?.[c])).join(","));
+  const lines = rows.map((r) => cols.map((c) => escape((r as Row)?.[c])).join(","));
   return [header, ...lines].join("\n");
 }
 
-function downloadText(filename, text) {
-  // Add UTF-8 BOM (Byte Order Mark) for proper Unicode support in Excel
+function downloadText(filename: string, text: string): void {
   const BOM = "\uFEFF";
-  const blob = new Blob([BOM + text], { 
-    type: "text/csv;charset=utf-8;" 
-  });
+  const blob = new Blob([BOM + text], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -31,13 +29,12 @@ function downloadText(filename, text) {
   a.click();
   URL.revokeObjectURL(url);
 }
-
 export default function Home() {
   const [keyword, setKeyword] = useState("");
   const [maxPosts, setMaxPosts] = useState(7);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [data, setData] = useState(null); // { keyword, count, posts }
+  const [data, setData] = useState<{ keyword?: string; count?: number; posts?: Row[] } | null>(null);
 
   const posts = data?.posts || [];
   const csv = useMemo(() => toCSV(posts), [posts]);
