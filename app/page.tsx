@@ -120,7 +120,7 @@ const posts: Row[] = data?.posts || [];
               <input
                 type="number"
                 value={maxPosts}
-                onChange={(e) => setMaxPosts(e.target.value)}
+                onChange={(e) => setMaxPosts(e.target.value === "" ? 0 : Number(e.target.value))}
                 min={1}
                 max={100}
                 style={{ 
