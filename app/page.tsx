@@ -181,12 +181,12 @@ onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                   opacity: posts.length ? 1 : 0.6,
                   minWidth: "140px"
                 }}
-                onMouseEnter={(e) => {
-                  if (posts.length) e.target.style.backgroundColor = "#059669";
-                }}
-                onMouseLeave={(e) => {
-                  if (posts.length) e.target.style.backgroundColor = "#10b981";
-                }}
+              onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+  if (posts.length) e.currentTarget.style.backgroundColor = "#059669";
+}}
+onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+  if (posts.length) e.currentTarget.style.backgroundColor = "#10b981";
+}}
               >
                 Export CSV
               </button>
