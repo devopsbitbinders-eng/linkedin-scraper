@@ -287,36 +287,47 @@ onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
                       const displayValue = typeof v === "object" ? JSON.stringify(v) : String(v);
 
                       // clickable link for postUrl
-                      if (c === "postUrl" && v) {
-                        return (
-                          <td key={c} style={{ borderBottom: "1px solid #e2e8f0", padding: "16px", verticalAlign: "top" }}>
-                            <a 
-                              href={v} 
-                              target="_blank" 
-                              rel="noreferrer"
-                              style={{
-                                display: "inline-flex",
-                                alignItems: "center",
-                                gap: "6px",
-                                padding: "8px 16px",
-                                backgroundColor: "#3b82f6",
-                                color: "white",
-                                textDecoration: "none",
-                                borderRadius: "8px",
-                                fontSize: "0.875rem",
-                                fontWeight: 500,
-                                transition: "all 0.2s",
-                                whiteSpace: "nowrap"
-                              }}
-                              onMouseEnter={(e) => e.target.style.backgroundColor = "#2563eb"}
-                              onMouseLeave={(e) => e.target.style.backgroundColor = "#3b82f6"}
-                            >
-                              <span>🔗</span>
-                              Open
-                            </a>
-                          </td>
-                        );
-                      }
+if (c === "postUrl") {
+  const href = typeof v === "string" ? v : String(v || "");
+  const safeHref = href.startsWith("http://") || href.startsWith("https://") ? href : "";
+
+  return (
+    <td key={c} style={{ borderBottom: "1px solid #e2e8f0", padding: "16px", verticalAlign: "top" }}>
+      {safeHref ? (
+        <a
+          href={safeHref}
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            padding: "8px 16px",
+            backgroundColor: "#3b82f6",
+            color: "white",
+            textDecoration: "none",
+            borderRadius: "8px",
+            fontSize: "0.875rem",
+            fontWeight: 500,
+            transition: "all 0.2s",
+            whiteSpace: "nowrap",
+          }}
+          onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.currentTarget.style.backgroundColor = "#2563eb";
+          }}
+          onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.currentTarget.style.backgroundColor = "#3b82f6";
+          }}
+        >
+          <span>🔗</span>
+          Open
+        </a>
+      ) : (
+        <span style={{ color: "#94a3b8" }}>—</span>
+      )}
+    </td>
+  );
+}
 
                       // For authorProfileUrl, make it clickable
                       if (c === "authorProfileUrl" && v && typeof v === 'string' && (v.startsWith('http://') || v.startsWith('https://'))) {
