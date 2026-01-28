@@ -150,12 +150,12 @@ const posts: Row[] = data?.posts || [];
                   opacity: (!keyword.trim() || loading) ? 0.6 : 1,
                   minWidth: "140px"
                 }}
-                onMouseEnter={(e) => {
-                  if (keyword.trim() && !loading) e.target.style.backgroundColor = "#2563eb";
-                }}
-                onMouseLeave={(e) => {
-                  if (keyword.trim() && !loading) e.target.style.backgroundColor = "#3b82f6";
-                }}
+               onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+  if (keyword.trim() && !loading) e.currentTarget.style.backgroundColor = "#2563eb";
+}}
+onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+  if (keyword.trim() && !loading) e.currentTarget.style.backgroundColor = "#3b82f6";
+}}
               >
                 {loading ? (
                   <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
